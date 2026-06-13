@@ -1,0 +1,53 @@
+# Chappie Workspace - Git Ignore
+
+# Ignorar contenido de proyectos (cada proyecto tiene su propio repo)
+projects/**
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+*~
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Cache
+.cache/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yaml
+
+# n8n
+projects/chappie-n8n-workflows/.n8n/
+projects/chappie-n8n-workflows/binaryData/
+
+# RabbitMQ
+projects/chappie-notification/data/
+
+# Quickshell build
+projects/chappie-quickshell/build/
+projects/chappie-quickshell/.qmldir/

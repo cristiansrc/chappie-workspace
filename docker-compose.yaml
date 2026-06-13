@@ -1,0 +1,102 @@
+# Chappie Ecosystem - Docker Compose
+# Servicios: n8n (orquestación) + RabbitMQ (bus de eventos)
+
+services:
+  # ============================================
+  # n8n - Workflow Orchestration
+  # ============================================
+  chappie-n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: chappie-n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_USER:-admin}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_PASSWORD:-chappie2026}
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=production
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=America/Bogota
+      # API Keys (inyectadas desde .env)
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - CLAUDE_API_KEY=${CLAUDE_API_KEY:-}
+      - GPT_API_KEY=${GPT_API_KEY:-}
+      - AZURE_TTS_KEY=${AZURE_TTS_KEY:-}
+    volumes:
+      - chappie-n8n-data:/home/node/.n8n
+      - ../projects/chappie-n8n-workflows/workflows:/workflows
+      - ../projects/chappie-n8n-workflows/config:/config
+    networks:
+      - chappie-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5678/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # ============================================
+  # RabbitMQ - Message Broker
+  # ============================================
+  chappie-rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: chappie-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"    # AMQP protocol
+      - "15672:15672"  # Management UI
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER:-chappie}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD:-chappie2026}
+      - RABBITMQ_DEFAULT_VHOST=/
+    volumes:
+      - chappie-rabbitmq-data:/var/lib/rabbitmq/mnesia
+    networks:
+      - chappie-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # ============================================
+  # RabbitMQ Init - Setup Queues and Exchanges
+  # ============================================
+  chappie-rabbitmq-init:
+    image: rabbitmq:3.13-management-alpine
+    container_name: chappie-rabbitmq-init
+    depends_on:
+      chappie-rabbitmq:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+        sleep 10 &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.responses durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.responses.dlq durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.errors durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.errors.dlq durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.tts.requests durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.agent.results durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.agent.questions durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.agent.answers durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.notifications durable=true &&
+        echo 'Chappie queues created successfully'
+      "
+    networks:
+      - chappie-network
+
+volumes:
+  chappie-n8n-data:
+    driver: local
+  chappie-rabbitmq-data:
+    driver: local
+
+networks:
+  chappie-network:
+    driver: bridge
+    name: chappie-network
