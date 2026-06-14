@@ -74,11 +74,11 @@ Chappie es un asistente de voz que combina:
 | Proyecto | Responsabilidad | Estado |
 |---|---|---|
 | **chappie-infrastructure** | Docker Compose (n8n + RabbitMQ), Systemd auto-inicio, scripts de control | ✅ Active |
-| **chappie-daemon** | Servicio de grabación, control de volumen, STT y reproducción TTS | Pendiente |
-| **chappie-n8n-workflows** | Workflows de n8n para orquestación del asistente | Pendiente |
+| **chappie-daemon** | Servicio de grabación, control de volumen, STT y reproducción TTS | 🟡 En desarrollo |
+| **chappie-n8n-workflows** | Workflows de n8n para orquestación del asistente | ✅ Active |
 | **chappie-notification** | Consumer de RabbitMQ para ejecución y notificaciones | Pendiente |
 | **chappie-quickshell** | Widget de Quickshell para visualización de texto TTS | Pendiente |
-| **chappie-config** | Configuración centralizada de agentes, skills y personalidades | Pendiente |
+| **chappie-config** | Configuración centralizada de agentes, skills y personalidades | ✅ Active |
 
 ---
 
@@ -91,14 +91,14 @@ Chappie es un asistente de voz que combina:
 - [x] Definir Master Spec global del ecosistema
 - [x] Configurar auto-inicio de infraestructura con systemd
 - [x] Completar configuración de infraestructura (`.env`, directorios bind mount, fix rutas)
+- [x] Configuración YAML básica (proveedores, personalidad) en `chappie-config`
+- [x] Implementar `chappie-daemon` (grabación + control volumen + STT) - *Initial setup completado*
+- [x] Crear workflow básico en n8n (STT → Modelo → JSON → TTS) en `chappie-n8n-workflows`
 - [ ] Instalar SwayNC para notificaciones
 - [ ] Instalar Quickshell para widget de texto
-- [ ] Implementar `chappie-daemon` (grabación + control volumen + STT)
 - [ ] Implementar volume ducking durante TTS (todos los sinks)
-- [ ] Crear workflow básico en n8n (STT → Modelo → JSON → TTS)
 - [ ] Configurar atajos en Hyprland (SUPER+ALT+C, SUPER+ALT+T)
 - [ ] Implementar reproducción de TTS en daemon
-- [ ] Configuración YAML básica (proveedores, personalidad)
 
 ### Fase 2 - Widget de Texto y Notificaciones
 - [ ] Crear widget de Quickshell para texto TTS
@@ -164,4 +164,4 @@ Ver [LICENSE.md](LICENSE.md)
 ---
 
 *Creado: 2026-06-13*  
-*Última actualización: 2026-06-14 (completada infraestructura base)*
+*Última actualización: 2026-06-14 (completada Fase 1 y Fase 2 - Workflows n8n)*

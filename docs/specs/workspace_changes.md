@@ -7,6 +7,81 @@
 
 ## Registro de Cambios
 
+### 2026-06-14 — Completado initial-setup de chappie-n8n-workflows
+
+**Tipo:** Progreso de proyecto  
+**Proyecto afectado:** chappie-n8n-workflows  
+**Proyectos downstream afectados:** Ninguno
+
+#### Cambios realizados
+
+1. **Implementación de Workflows y Configuración**
+   - Se crearon los workflows JSON para Voice Pipeline y Error Handler.
+   - Se crearon los archivos YAML de configuración (providers, personality, memory).
+   - Se resolvieron 10 hallazgos de revisión (incluyendo correcciones en RabbitMQ, parseo YAML y autenticación).
+2. **Rama `feature/initial-setup` creada** desde `develop`
+   - Commit semántico: `feat(initial-setup): implement voice pipeline, error handler and config structure`
+   - Working tree limpio.
+3. **Incremento cerrado**
+   - Master Spec local en estado `Active`.
+   - Shared Context en estado `closed`.
+   - Pendiente de QA manual (Human QA Approval).
+
+#### Próximos pasos requeridos
+- Hacer push de la rama `feature/initial-setup` al remoto (si aplica).
+- Realizar pruebas manuales (QA) en n8n para verificar la carga de workflows y la conexión con RabbitMQ.
+- Continuar con la Fase 3 del plan de trabajo (chappie-notification).
+
+---
+
+### 2026-06-14 — Corrección de contratos globales para chappie-n8n-workflows
+
+**Tipo:** Corrección arquitectónica  
+**Proyecto afectado:** chappie-n8n-workflows, chappie-notification  
+**Proyectos downstream afectados:** Ninguno
+
+#### Cambios realizados
+
+1. **Corrección de Owner de Ejecución de Agentes**
+   - Archivo: `docs/architecture/integration-map.md`
+   - Bug: La sección 1.4 asignaba la ejecución de agentes a `chappie-n8n-workflows`.
+   - Fix: Se corrigió el owner a `chappie-notification` (execution_consumer), alineándolo con la Master Spec global.
+
+2. **Corrección de Producer de TTS Requests**
+   - Archivo: `docs/architecture/integration-map.md`
+   - Bug: La sección 2.3 omitía a n8n como producer de la cola `chappie.tts.requests`.
+   - Fix: Se añadió a n8n (Error Handler Workflow) como producer.
+
+3. **Eliminación de Workflow Inexistente**
+   - Archivo: `docs/architecture/system-landscape.md`
+   - Bug: El diagrama C4 listaba un workflow "TTS Generator" en n8n.
+   - Fix: Se eliminó del diagrama, ya que la generación de TTS es responsabilidad de `chappie-notification`.
+
+#### Próximos pasos requeridos
+- El agente `planner` debe corregir los hallazgos locales en la Master Spec de `chappie-n8n-workflows` y solicitar una nueva validación.
+
+---
+
+### 2026-06-14 — Completado initial-setup de chappie-daemon y creada rama develop
+
+**Tipo:** Progreso de proyecto  
+**Proyecto afectado:** chappie-daemon  
+**Proyectos downstream afectados:** Ninguno
+
+#### Cambios realizados
+
+1. **Rama `develop` creada** desde `feature/initial-setup`
+   - Working tree limpio al momento de la creación
+   - Todas las tareas del task board `initial-setup-task-board.md` están marcadas como `done`
+   - Board Status actualizado de `todo` a `done`
+   - Pendiente: Hacer `git push origin develop` (requiere autenticación)
+
+#### Próximos pasos requeridos
+- Hacer push de la rama `develop` al remoto
+- Continuar con las siguientes fases del plan de trabajo
+
+---
+
 ### 2026-06-14 — Completada configuración de chappie-infrastructure
 
 **Tipo:** Mejora de infraestructura  

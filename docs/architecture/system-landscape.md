@@ -85,7 +85,7 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
 │  │  │  │  Workflows:       │    │  Queues:               │    │     │  │
 │  │  │  │  - Voice Pipeline │    │  - chappie.responses   │    │     │  │
 │  │  │  │  - Error Handler  │    │  - chappie.errors      │    │     │  │
-│  │  │  │  - TTS Generator  │    │  - chappie.tts.requests│    │     │  │
+│  │  │  │                   │    │  - chappie.tts.requests│    │     │  │
 │  │  │  │                   │    │  - chappie.agent.*     │    │     │  │
 │  │  │  │  Puerto: 5678     │    │  Puertos: 5672, 15672  │    │     │  │
 │  │  │  └──────────────────┘    └────────────────────────┘    │     │  │

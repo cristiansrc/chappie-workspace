@@ -127,13 +127,13 @@
 }
 ```
 
-### 1.4 n8n → OpenCode CLI (Agent Execution)
+### 1.4 chappie-notification → OpenCode CLI (Agent Execution)
 
 | Aspecto | Detalle |
 |---|---|
 | **Tipo** | subprocess (CLI) |
 | **Comando** | `opencode run --agent <agent> "<prompt>"` |
-| **Owner** | chappie-n8n-workflows |
+| **Owner** | chappie-notification |
 | **Timeout** | 120 segundos |
 | **Retry** | No (se maneja via RabbitMQ) |
 
@@ -240,7 +240,7 @@
 | Aspecto | Detalle |
 |---|---|
 | **Tipo** | Queue (point-to-point) |
-| **Producer** | chappie-notification (execution_consumer, error_consumer) |
+| **Producer** | chappie-notification (execution_consumer, error_consumer), n8n (Error Handler Workflow) |
 | **Consumer** | chappie-notification (tts_consumer) |
 | **Schema** | Ver abajo |
 | **Durability** | Durable |
