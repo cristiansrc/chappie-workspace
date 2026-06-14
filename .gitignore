@@ -3,6 +3,11 @@
 # Ignorar contenido de proyectos (cada proyecto tiene su propio repo)
 projects/**
 
+# EXCEPCIÓN: chappie-infrastructure se versiona en el workspace
+# (contiene docker-compose y systemd necesarios para el arranque global)
+!projects/chappie-infrastructure/
+!projects/chappie-infrastructure/**
+
 # Archivos temporales
 *.tmp
 *.bak

@@ -1,0 +1,27 @@
+[Unit]
+Description=Chappie Infrastructure (Docker Compose)
+Documentation=https://github.com/cris/chappie-workspace
+After=docker.service network-online.target
+Wants=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+WorkingDirectory=%h/Documentos/Proyectos/chappie-workspace/projects/chappie-infrastructure
+
+# Esperar a que Docker esté listo
+ExecStartPre=/usr/bin/sleep 5
+
+# Iniciar todos los servicios de infraestructura
+ExecStart=/usr/bin/docker compose -f %h/Documentos/Proyectos/chappie-workspace/projects/chappie-infrastructure/docker-compose.yaml up -d
+
+# Detener servicios al apagar
+ExecStop=/usr/bin/docker compose -f %h/Documentos/Proyectos/chappie-workspace/projects/chappie-infrastructure/docker-compose.yaml down
+
+# Timeouts generosos para inicio y apagado
+TimeoutStartSec=120
+TimeoutStopSec=60
+
+[Install]
+WantedBy=default.target

@@ -2,7 +2,7 @@
 
 **Estado:** Active  
 **Owner:** Enterprise Architect  
-**Última actualización:** 2026-06-13
+**Última actualización:** 2026-06-14
 
 ---
 
@@ -13,8 +13,9 @@
 ├── .gitignore
 ├── README.md
 ├── LICENSE.md
-├── docker-compose.yaml
 ├── docs/
+│   ├── specs/
+│   │   └── master_spec.md
 │   └── architecture/
 │       ├── system-landscape.md
 │       ├── context-map.md
@@ -26,6 +27,7 @@
 │           ├── ADR-003-swaync-notifications.md
 │           └── ADR-004-quickshell-text-widget.md
 └── projects/
+    ├── chappie-infrastructure/
     ├── chappie-daemon/
     ├── chappie-n8n-workflows/
     ├── chappie-notification/
@@ -38,7 +40,8 @@
 ## 2. Proyectos
 
 | Proyecto | Ruta Relativa | Bounded Context | Owner | Estado |
-|---|---|---|---|---|
+|---|---|---|---|---|---|
+| **chappie-infrastructure** | `projects/chappie-infrastructure/` | Infrastructure (Docker, Systemd) | Cris | Active |
 | **chappie-daemon** | `projects/chappie-daemon/` | Voice Capture, Audio Output Control, STT Client | Cris | Pendiente |
 | **chappie-n8n-workflows** | `projects/chappie-n8n-workflows/` | Orchestration, Memory | Cris | Pendiente |
 | **chappie-notification** | `projects/chappie-notification/` | Agent Execution, Event Bus Consumer, TTS, Notification | Cris | Pendiente |
@@ -49,15 +52,20 @@
 
 ## 3. Repositorios
 
-Cada proyecto en `projects/` es un repositorio independiente. El workspace principal (`chappie-workspace`) versiona únicamente la documentación arquitectónica y el `docker-compose.yaml`.
+Cada proyecto en `projects/` es un repositorio independiente. El workspace principal (`chappie-workspace`) versiona únicamente la documentación arquitectónica y `chappie-infrastructure` (Docker Compose + Systemd para auto-inicio global).
 
-El `.gitignore` del workspace ignora `projects/**` para evitar versionar sub-repositorios dentro del repo de arquitectura.
+El `.gitignore` del workspace ignora `projects/**` EXCEPTO `projects/chappie-infrastructure/`, que se versiona en el workspace porque contiene la configuración de infraestructura base necesaria para el arranque.
 
 ---
 
 ## 4. Dependencias entre Proyectos
 
 ```
+chappie-infrastructure (Docker: n8n + RabbitMQ, Systemd auto-start)
+       │
+       ├──▶ chappie-n8n-workflows (se despliega en n8n)
+       └──▶ chappie-notification (consume de RabbitMQ)
+
 chappie-config (Configuration, Personality)
        │
        ├──▶ chappie-daemon (lee config al iniciar)

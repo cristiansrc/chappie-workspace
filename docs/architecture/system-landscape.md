@@ -2,7 +2,7 @@
 
 **Estado:** Active  
 **Owner:** Enterprise Architect  
-**Última actualización:** 2026-06-13
+**Última actualización:** 2026-06-14
 
 ---
 
@@ -45,7 +45,8 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
 
 | Contenedor | Tecnología | Responsabilidad | Puerto |
 |---|---|---|---|
-| **chappie-daemon** | Python 3 + asyncio | Servicio de grabación, control de volumen, STT, reproducción TTS | 8765 (HTTP API) |
+| **chappie-infrastructure** | Docker Compose + Systemd | Orquestación de infraestructura: n8n + RabbitMQ + auto-inicio al boot | N/A |
+| **chappie-daemon** | Python 3 + asyncio | Servicio de grabación, control de volumen, STT, reproducción TTS, escritura de estado | 8765 (HTTP API) |
 | **chappie-n8n** | n8n (Node.js) | Orquestación de workflows: STT → Modelo → JSON → TTS | 5678 (Web UI) |
 | **chappie-rabbitmq** | RabbitMQ 3.13 | Cola de mensajes para eventos, errores, TTS, notificaciones | 5672 (AMQP), 15672 (Management UI) |
 | **chappie-notification** | Python 3 + pika | Consumer de RabbitMQ: ejecución de agentes, comandos, TTS, notificaciones | N/A |
@@ -74,11 +75,12 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
 │  │           │                   │ /tmp/chappie_tts_state.txt  │    │  │
 │  │           │ HTTP POST         └─────────────────────────────┘    │  │
 │  │           ▼                                                       │  │
-│  │  ┌─────────────────────────────────────────────────────────┐     │  │
-│  │  │              Docker Compose                              │     │  │
-│  │  │                                                          │     │  │
-│  │  │  ┌──────────────────┐    ┌────────────────────────┐    │     │  │
-│  │  │  │  chappie-n8n      │    │  chappie-rabbitmq      │    │     │  │
+  │  │  ┌─────────────────────────────────────────────────────────┐     │  │
+  │  │  │  chappie-infrastructure (Docker Compose + Systemd)        │     │  │
+  │  │  │  Auto-inicio al boot vía systemd --user                   │     │  │
+  │  │  │                                                          │     │  │
+  │  │  │  ┌──────────────────┐    ┌────────────────────────┐    │     │  │
+  │  │  │  │  chappie-n8n      │    │  chappie-rabbitmq      │    │     │  │
 │  │  │  │                   │    │                        │    │     │  │
 │  │  │  │  Workflows:       │    │  Queues:               │    │     │  │
 │  │  │  │  - Voice Pipeline │    │  - chappie.responses   │    │     │  │
@@ -147,7 +149,7 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
        ▼
 4. chappie-daemon envía audio a n8n
    POST http://localhost:5678/webhook/chappie-voice-capture
-   Body: { audio_base64, timestamp, session_id }
+   Body: { audio_base64, timestamp, session_id, include_screen }
        │
        ▼
 5. n8n WORKFLOW: "Chappie Voice Pipeline"
@@ -166,11 +168,18 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
        │   └──▶ Monitorear: éxito → chappie.agent.results | error → chappie.errors
        └──▶ SI NO hay ejecución → Publicar en chappie.tts.requests
        │
-       ▼
+        ▼
 7. chappie-notification (tts_consumer) escucha chappie.tts.requests
-       ├──▶ BAJA volumen al 10% en TODOS los sinks
        ├──▶ Generar audio con proveedor TTS configurado
+       ├──▶ Guardar audio en /tmp/chappie_tts.mp3
        ├──▶ Escribir texto en /tmp/chappie_tts_text.txt
+       └──▶ Enviar a chappie-daemon: POST /play-tts
+               Body: { audio_file: "/tmp/chappie_tts.mp3", text: "...", ducking: true }
+       │
+       ▼
+8. chappie-daemon procesa POST /play-tts
+       ├──▶ Leer tts-config.yaml (volume_ducking config)
+       ├──▶ BAJA volumen al 10% en TODOS los sinks activos
        ├──▶ Escribir estado "speaking" en /tmp/chappie_tts_state.txt
        ├──▶ Reproducir audio
        ├──▶ Esperar fin de reproducción
@@ -178,7 +187,7 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
        └──▶ Escribir estado "idle" en /tmp/chappie_tts_state.txt
        │
        ▼
-8. chappie-quickshell lee archivos de estado
+9. chappie-quickshell lee archivos de estado
        ├──▶ Muestra texto de Chappie en widget
        └──▶ Oculta widget cuando estado = "idle"
 ```
@@ -196,8 +205,10 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
 3. error_consumer escucha chappie.errors
        ├──▶ NO reproducir voz original
        ├──▶ Llamar a n8n webhook: chappie-error-handler
-       ├──▶ Modelo genera nueva respuesta con pregunta
-       └──▶ Publicar en chappie.tts.requests
+       ├──▶ n8n workflow "Error Handler":
+       │   ├──▶ Modelo genera nueva respuesta con pregunta
+       │   └──▶ n8n publica directamente en chappie.tts.requests (RabbitMQ)
+       └──▶ [Fin] error_consumer no publica en TTS
 ```
 
 ### 4.3 Flujo de Notificación Interactiva
@@ -266,6 +277,7 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
 
 | Componente | Métrica |
 |---|---|
+| chappie-infrastructure | systemctl --user status chappie-infra, docker compose ps, docker compose logs |
 | chappie-daemon | Logs en journalctl, estado en /tmp/chappie_state |
 | n8n | Logs en Docker, Execution History en Web UI |
 | RabbitMQ | Management UI en puerto 15672 |

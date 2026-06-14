@@ -2,7 +2,30 @@
 
 **Estado:** Active  
 **Owner:** Enterprise Architect  
-**Última actualización:** 2026-06-13
+**Última actualización:** 2026-06-14
+
+---
+
+## 0. Infraestructura Base (Auto-Inicio)
+
+### 0.1 chappie-infrastructure → System Boot
+
+| Aspecto | Detalle |
+|---|---|
+| **Tipo** | Systemd user service |
+| **Servicio** | `chappie-infra.service` |
+| **Ubicación** | `~/.config/systemd/user/chappie-infra.service` |
+| **Acción** | `docker compose up -d` al iniciar sesión |
+| **Contenedores** | chappie-n8n, chappie-rabbitmq, chappie-rabbitmq-init |
+| **Proyecto** | `projects/chappie-infrastructure/` |
+
+**Flujo de arranque:**
+```
+1. PC enciende → systemd inicia sesión de usuario
+2. systemd --user ejecuta chappie-infra.service
+3. docker compose up -d → n8n + RabbitMQ disponibles
+4. chappie-daemon, chappie-notification, chappie-quickshell se conectan
+```
 
 ---
 
@@ -37,7 +60,7 @@
 }
 ```
 
-### 1.2 chappie-daemon → n8n (Error Handler Webhook)
+### 1.2 chappie-notification → n8n (Error Handler Webhook)
 
 | Aspecto | Detalle |
 |---|---|
@@ -46,6 +69,15 @@
 | **Owner** | chappie-n8n-workflows |
 | **Timeout** | 15 segundos |
 | **Retry** | 2 intentos |
+
+**Descripción del flujo:**
+1. `chappie-notification (error_consumer)` envía el error a n8n.
+2. n8n ejecuta el workflow "Error Handler":
+   - Genera una nueva respuesta con el modelo de IA.
+   - Publica el resultado directamente en la cola `chappie.tts.requests` (RabbitMQ).
+   - NO devuelve el TTS en la respuesta HTTP.
+3. `error_consumer` recibe confirmación de recepción y continúa.
+4. `tts_consumer` recibe el mensaje de `chappie.tts.requests` y procesa normalmente.
 
 **Request Payload:**
 ```json
@@ -57,7 +89,15 @@
 }
 ```
 
-### 1.3 chappie-notification → chappie-daemon (TTS Playback)
+**Response:**
+```json
+{
+  "status": "accepted",
+  "workflow_execution_id": "n8n-exec-id"
+}
+```
+
+### 1.3 chappie-notification → chappie-daemon (TTS Playback and Audio Control)
 
 | Aspecto | Detalle |
 |---|---|
@@ -66,6 +106,17 @@
 | **Owner** | chappie-daemon |
 | **Timeout** | 5 segundos |
 | **Retry** | No (fire-and-forget) |
+
+**Descripción del flujo completo (gestionado por chappie-daemon):**
+1. Recibe la solicitud con el archivo de audio y el texto.
+2. Lee `tts-config.yaml` para la configuración de volume ducking.
+3. Reduce el volumen al 10% en todos los sinks activos.
+4. Escribe `"speaking"` en `/tmp/chappie_tts_state.txt`.
+5. Reproduce el archivo de audio mediante PipeWire/WirePlumber.
+6. Espera el fin de la reproducción.
+7. Restaura el volumen original.
+8. Escribe `"idle"` en `/tmp/chappie_tts_state.txt`.
+9. Responde a chappie-notification con `{ "status": "completed" }`.
 
 **Request Payload:**
 ```json
@@ -325,13 +376,13 @@
 | **Format** | Texto plano |
 | **Sync** | FileView de Quickshell (watch file changes) |
 
-### 3.2 chappie-notification → chappie-quickshell (TTS State)
+### 3.2 chappie-daemon → chappie-quickshell (TTS State)
 
 | Aspecto | Detalle |
 |---|---|
 | **Tipo** | File-based state |
 | **Archivo** | `/tmp/chappie_tts_state.txt` |
-| **Writer** | chappie-notification (tts_consumer) |
+| **Writer** | chappie-daemon (POST /play-tts handler) |
 | **Reader** | chappie-quickshell (ChappieTextWidget) |
 | **Values** | "speaking" | "idle" |
 | **Sync** | FileView de Quickshell |

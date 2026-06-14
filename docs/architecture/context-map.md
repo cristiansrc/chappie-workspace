@@ -2,7 +2,7 @@
 
 **Estado:** Active  
 **Owner:** Enterprise Architect  
-**Última actualización:** 2026-06-13
+**Última actualización:** 2026-06-14
 
 ---
 
@@ -11,7 +11,8 @@
 ### 1.1 Identificación de Contextos
 
 | Bounded Context | Responsabilidad | Lenguaje Ubicuo | Proyecto |
-|---|---|---|---|
+|---|---|---|---|---|
+| **Infrastructure** | Docker Compose, Systemd, auto-inicio, gestión de contenedores | "docker", "contenedor", "auto-inicio", "systemd" | chappie-infrastructure |
 | **Voice Capture** | Grabación de audio, control de volumen del micrófono, detección de atajos | "grabación", "captura", "walkie-talkie", "atajo" | chappie-daemon |
 | **Audio Output Control** | Volume ducking, restauración de volumen, gestión de sinks de audio | "ducking", "sink", "volumen", "mute" | chappie-daemon, chappie-notification |
 | **Speech-to-Text (STT)** | Transcripción de audio a texto | "transcripción", "STT", "audio", "texto" | chappie-daemon, n8n |
@@ -176,7 +177,8 @@ Si en el futuro se integran nuevos proveedores de IA con formatos incompatibles,
 ## 6. Ownership
 
 | Bounded Context | Owner Funcional | Owner Técnico |
-|---|---|---|
+|---|---|---|---|
+| Infrastructure | Cris | chappie-infrastructure |
 | Voice Capture | Cris | chappie-daemon |
 | Audio Output Control | Cris | chappie-daemon, chappie-notification |
 | STT | Cris | chappie-daemon, n8n |
