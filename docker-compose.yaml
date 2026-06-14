@@ -28,8 +28,8 @@ services:
       - AZURE_TTS_KEY=${AZURE_TTS_KEY:-}
     volumes:
       - chappie-n8n-data:/home/node/.n8n
-      - ../projects/chappie-n8n-workflows/workflows:/workflows
-      - ../projects/chappie-n8n-workflows/config:/config
+      - ./projects/chappie-n8n-workflows/workflows:/workflows
+      - ./projects/chappie-n8n-workflows/config:/config
     networks:
       - chappie-network
     healthcheck:

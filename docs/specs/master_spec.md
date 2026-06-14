@@ -2,7 +2,7 @@
 
 **Estado:** Active  
 **Owner:** Enterprise Architect  
-**Última actualización:** 2026-06-14  
+**Última actualización:** 2026-06-14 (completada infraestructura base)  
 **Workspace Root:** `/home/cristiansrc/Documentos/Proyectos/chappie-workspace`
 
 ---
@@ -211,6 +211,8 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
 | `docs/architecture/integration-map.md` | Contratos de integración detallados, payloads, colas |
 | `docs/architecture/workspace-mapping.md` | Estructura del workspace, dependencias entre proyectos |
 | `docs/architecture/decision-records/*.md` | Registro de decisiones arquitectónicas (ADRs) |
+| `docs/specs/workspace_changes.md` | Historial de cambios arquitectónicos del workspace |
+| `docs/specs/technical_debt.md` | Deuda técnica global consolidada |
 
 ---
 

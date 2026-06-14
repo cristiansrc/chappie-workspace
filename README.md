@@ -90,6 +90,7 @@ Chappie es un asistente de voz que combina:
 - [x] Definir arquitectura global (System Landscape, Context Map, Integration Map, ADRs)
 - [x] Definir Master Spec global del ecosistema
 - [x] Configurar auto-inicio de infraestructura con systemd
+- [x] Completar configuración de infraestructura (`.env`, directorios bind mount, fix rutas)
 - [ ] Instalar SwayNC para notificaciones
 - [ ] Instalar Quickshell para widget de texto
 - [ ] Implementar `chappie-daemon` (grabación + control volumen + STT)
@@ -137,6 +138,8 @@ Chappie es un asistente de voz que combina:
 - [Integration Map](docs/architecture/integration-map.md)
 - [Workspace Mapping](docs/architecture/workspace-mapping.md)
 - [Decision Records](docs/architecture/decision-records/)
+- [Workspace Changes (Historial)](docs/specs/workspace_changes.md)
+- [Technical Debt (Global)](docs/specs/technical_debt.md)
 
 ---
 
@@ -161,4 +164,4 @@ Ver [LICENSE.md](LICENSE.md)
 ---
 
 *Creado: 2026-06-13*  
-*Última actualización: 2026-06-14*
+*Última actualización: 2026-06-14 (completada infraestructura base)*
