@@ -1,7 +1,7 @@
 # Workspace Changes - Chappie Ecosystem
 
 **Owner:** Enterprise Architect  
-**Última actualización:** 2026-06-15
+**Última actualización:** 2026-06-15 (completado chappie-quickshell)
 
 ---
 
@@ -27,7 +27,34 @@
 
 ---
 
+### 2026-06-15 — Completado chappie-quickshell (Fase 4)
 
+**Tipo:** Progreso de proyecto  
+**Proyecto afectado:** chappie-quickshell  
+**Proyectos downstream afectados:** Ninguno
+
+#### Cambios realizados
+
+1. **Implementación del widget visual QML/Qt6**
+   - Singleton `ChappieState.qml` con 4 FileView instances y propiedades reactivas.
+   - `ChappieTextWidget.qml`: visibilidad 3-condiciones (textEnabled + ttsState + ttsText) con animaciones FadeIn+SlideDown/FadeOut+SlideUp + crossfade.
+   - `ChappieStatusWidget.qml`: 5 estados del daemon (idle/listening/thinking/working/speaking) con colores y animación de pulso.
+   - `shell.qml`: entry point Layer Surface overlay (focusable:false, exclusiveZone:0).
+   - `scripts/test-widget.sh`: script de prueba manual con 10 pasos.
+
+2. **Flujo SDD completo seguido:**
+   - Master Spec → Spec Validator (ready) → Aprobación humana → Task Decomposer → Executor → Reviewer → Correcciones → Git Executor.
+
+3. **Code Review:** 9 hallazgos encontrados y corregidos (0 deuda técnica).
+
+4. **Rama `feature/widget-initial`:** Commit semántico `feat(widget-initial): implement chappie-quickshell QML widgets` (9 archivos, +1550 líneas). Pusheado al remoto.
+
+#### Próximos pasos requeridos
+- QA manual: ejecutar `quickshell shell.qml` + `./scripts/test-widget.sh` en Hyprland.
+- Merge a `develop` tras aprobación.
+- Personalización visual (tema Ambxst) en iteración posterior.
+
+---
 
 ### 2026-06-14 — Resolución de DEBT-001 en chappie-notification
 
@@ -122,7 +149,7 @@
    - `chappie-daemon`: ✅ Completo (initial-setup, rama `develop` lista)
    - `chappie-n8n-workflows`: ✅ Completo (workflows JSON + config YAML, spec validada)
    - `chappie-notification`: ✅ **Completo** (se descubrió que ya estaba implementado: 4 consumers RabbitMQ, Edge-TTS, OpenCode, SwayNC, tests, todo el código hexagonal listo)
-   - `chappie-quickshell`: ⏳ Pendiente
+   - `chappie-quickshell`: ✅ Completo
 
 2. **Corrección del workspace-plan.md:**
    - Se corrigió `chappie-notification` de "pendiente" a "completado" tras verificar que existe la implementación completa.
@@ -131,7 +158,7 @@
 #### Próximos pasos requeridos
 - Hacer push de `chappie-daemon`, `chappie-n8n-workflows` y `chappie-notification` a los remotos.
 - QA manual de los workflows de n8n.
-- Iniciar Fase 4: `chappie-quickshell` (widget visual QML/Qt6).
+- Fase 4 completada: `chappie-quickshell` implementado y pusheado a feature/widget-initial.
 
 ---
 
