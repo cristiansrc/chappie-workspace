@@ -1,7 +1,7 @@
 # Plan de Trabajo del Workspace - Chappie Ecosystem
 
 **Estado:** Active
-**Última actualización:** 2026-06-14
+**Última actualización:** 2026-06-15
 
 Este documento detalla el plan de trabajo global para implementar el ecosistema Chappie, basado en la arquitectura definida en `docs/architecture/system-landscape.md`.
 
@@ -13,29 +13,31 @@ Este documento detalla el plan de trabajo global para implementar el ecosistema 
 
 ## Fase 1: Configuración Base y Core de Voz (Prioridad Alta)
 
-- [x] **chappie-config**: Crear estructura base y archivos YAML de configuración (proveedores, TTS, whitelist, personalidad).
-- [x] **chappie-daemon (initial-setup)**: Planificación completada, spec validada, tareas de setup implementadas y rama `develop` creada desde `feature/initial-setup`.
-  - Pendiente: Fase 2 (notificaciones TTS), Fase 3 (UI Quickshell).
+- [x] **chappie-config**: Archivos YAML base creados (providers, TTS, whitelist, personalidad).
+- [x] **chappie-daemon (initial-setup)**: Implementado y revisado. Rama `develop` creada. Incluye captura de voz, ducking, reproducción TTS endpoint `/play-tts`, escritura de estado y tests con cobertura 90%.
+  - Pendiente: Push al remoto (requiere autenticación del usuario).
 
 ## Fase 2: Orquestación y Procesamiento (Prioridad Alta)
 
-- [x] **chappie-n8n-workflows**: Diseñar e implementar los workflows de n8n para el procesamiento de voz (STT -> LLM -> JSON) y manejo de errores.
+- [x] **chappie-n8n-workflows**: Voice Pipeline y Error Handler implementados (workflows JSON). Configuración YAML completa de proveedores, personalidad y memoria.
 
 ## Fase 3: Notificaciones, TTS y Ejecución (Prioridad Media)
 
-- [x] **chappie-notification**: Planificar e implementar el consumer de RabbitMQ para ejecutar agentes OpenCode, generar audio TTS y mostrar notificaciones SwayNC.
-- [ ] **chappie-daemon (Integración TTS)**: Implementar el endpoint `POST /play-tts` para reproducir el audio generado con volume ducking.
+- [ ] **chappie-notification**: Consumer de RabbitMQ para ejecutar agentes OpenCode, generar audio TTS y mostrar notificaciones SwayNC. **Pendiente de iniciar.**
 
 ## Fase 4: UI Visual (Prioridad Baja)
 
-- [ ] **chappie-quickshell**: Planificar e implementar el widget visual en QML/Qt6 para mostrar el texto TTS y el estado del sistema.
+- [ ] **chappie-quickshell**: Widget visual en QML/Qt6 para mostrar el texto TTS y el estado del sistema. **Pendiente de iniciar.**
 
 ---
 
 ## Delegación Actual
 
-1. **chappie-config**: Completado.
-2. **chappie-daemon**: Initial-setup completado. Pendiente de push al remoto por el usuario.
-3. **chappie-n8n-workflows**: Completado.
-4. **chappie-notification**: Completado.
-5. **chappie-daemon (Integración TTS)**: Pendiente de delegación.
+| Proyecto | Estado | Próxima acción |
+|---|---|---|
+| **chappie-infrastructure** | ✅ Completo | Push al remoto |
+| **chappie-config** | ✅ Completo (YAML base) | Push al remoto |
+| **chappie-daemon** | ✅ Completo (initial-setup) | Push al remoto (requiere autenticación) |
+| **chappie-n8n-workflows** | ✅ Completo (initial-setup) | Push y QA manual |
+| **chappie-notification** | ⏳ Pendiente | Planificar e implementar |
+| **chappie-quickshell** | ⏳ Pendiente | Planificar e implementar |

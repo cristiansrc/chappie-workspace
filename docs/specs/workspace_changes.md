@@ -86,7 +86,33 @@
 
 ---
 
-### 2026-06-14 — Corrección de contratos globales para chappie-n8n-workflows
+### 2026-06-15 — Verificación y actualización del workspace (Post-Fase 2)
+
+**Tipo:** Progreso de proyecto  
+**Proyecto afectado:** Todos  
+**Proyectos downstream afectados:** Ninguno
+
+#### Cambios realizados
+
+1. **Verificación del estado real del workspace:**
+   - `chappie-infrastructure`: ✅ Completo
+   - `chappie-config`: ✅ Completo (YAML base)
+   - `chappie-daemon`: ✅ Completo (initial-setup, rama `develop` lista)
+   - `chappie-n8n-workflows`: ✅ Completo (workflows JSON + config YAML, spec validada)
+   - `chappie-notification`: ⏳ Pendiente de iniciar
+   - `chappie-quickshell`: ⏳ Pendiente de iniciar
+
+2. **Corrección del workspace-plan.md:**
+   - Se corrigió `chappie-notification` de "completado" a "pendiente" (estaba incorrectamente marcado).
+   - Se actualizó la tabla de delegación para reflejar el estado real.
+
+#### Próximos pasos requeridos
+- Iniciar Fase 3: `chappie-notification` (consumer de RabbitMQ, TTS, agentes, notificaciones SwayNC).
+- Luego Fase 4: `chappie-quickshell` (widget visual).
+
+---
+
+
 
 **Tipo:** Corrección arquitectónica  
 **Proyecto afectado:** chappie-n8n-workflows, chappie-notification  
