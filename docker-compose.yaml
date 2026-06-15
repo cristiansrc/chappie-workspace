@@ -81,10 +81,15 @@ services:
         rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.errors durable=true &&
         rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.errors.dlq durable=true &&
         rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.tts.requests durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.tts.requests.dlq durable=true &&
         rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.agent.results durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.agent.results.dlq durable=true &&
         rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.agent.questions durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.agent.questions.dlq durable=true &&
         rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.agent.answers durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.agent.answers.dlq durable=true &&
         rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.notifications durable=true &&
+        rabbitmqadmin --host=chappie-rabbitmq --username=${RABBITMQ_USER:-chappie} --password=${RABBITMQ_PASSWORD:-chappie2026} declare queue name=chappie.notifications.dlq durable=true &&
         echo 'Chappie queues created successfully'
       "
     networks:

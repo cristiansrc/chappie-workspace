@@ -116,7 +116,7 @@
 6. Espera el fin de la reproducción.
 7. Restaura el volumen original.
 8. Escribe `"idle"` en `/tmp/chappie_tts_state.txt`.
-9. Responde a chappie-notification con `{ "status": "completed" }`.
+9. Responde a chappie-notification con `{ "status": "success", "message": "Audio played successfully" }`.
 
 **Request Payload:**
 ```json
@@ -158,6 +158,34 @@
 | **Timeout** | 30 segundos |
 | **Retry** | 2 intentos con fallback a otro proveedor |
 | **Auth** | Bearer Token |
+
+### 1.7 Hyprland keybinds → chappie-daemon (Shortcut Events)
+
+| Aspecto | Detalle |
+|---|---|
+| **Tipo** | HTTP POST |
+| **Endpoint (Press)** | `POST /shortcut/press` |
+| **Endpoint (Release)** | `POST /shortcut/release` |
+| **Owner** | chappie-daemon |
+| **Timeout** | 2 segundos |
+| **Retry** | No |
+| **Trigger** | Hyprland keybind via `client.sh` |
+
+**POST /shortcut/press — Descripción del flujo:**
+1. Usuario presiona la tecla asignada en Hyprland.
+2. `client.sh` envía `POST /shortcut/press` a chappie-daemon.
+3. chappie-daemon inicia la grabación de audio.
+4. Activa volume ducking (reduce volumen de otros sinks al 10%).
+5. Escribe `"listening"` en `/tmp/chappie_state.txt`.
+6. Responde con `{ "status": "recording" }`.
+
+**POST /shortcut/release — Descripción del flujo:**
+1. Usuario suelta la tecla asignada en Hyprland.
+2. `client.sh` envía `POST /shortcut/release` a chappie-daemon.
+3. chappie-daemon detiene la grabación de audio.
+4. Restaura el volumen original (volume ducking off).
+5. Envía el audio capturado a n8n (Voice Capture Webhook).
+6. Responde con `{ "status": "processing" }`.
 
 ---
 
@@ -415,46 +443,104 @@
 
 ### 4.1 providers.yaml
 
+Existen dos versiones del archivo `providers.yaml` para contextos distintos:
+
+**A. `chappie-config/providers.yaml`** — Configuración detallada para el ecosistema Chappie:
+```yaml
+llm_providers:
+  opencode:
+    display_name: "OpenCode API"
+    base_url: "https://api.opencode.ai/v1"
+    auth_type: bearer_token
+    auth_env_var: "OPENCODE_API_KEY"
+    priority: 1
+    models:
+      deepseek-v4-flash:
+        display_name: "DeepSeek V4 Flash"
+        context_window: 128000
+        default_temperature: 0.7
+      qwen3.6-plus-free:
+        display_name: "Qwen 3.6 Plus"
+        context_window: 128000
+        default_temperature: 0.8
+      mimo-v2.5:
+        display_name: "Mimo V2.5"
+        context_window: 64000
+        default_temperature: 0.7
+  gemini:
+    display_name: "Google Gemini API"
+    base_url: "https://generativelanguage.googleapis.com/v1beta"
+    auth_type: api_key
+    auth_env_var: "GEMINI_API_KEY"
+    priority: 2
+    models:
+      gemini-2.5-flash:
+        display_name: "Gemini 2.5 Flash"
+        context_window: 256000
+        supports_audio: true
+      gemini-2.5-flash-lite:
+        display_name: "Gemini 2.5 Flash Lite"
+        context_window: 128000
+stt:
+  provider: gemini
+  model: gemini-2.5-flash
+  audio:
+    format: "wav"
+    sample_rate: 16000
+    channels: 1
+  fallback:
+    provider: whisper
+    model: base
+opencode_cli:
+  binary: "opencode"
+  default_timeout_ms: 120000
+task_routing:
+  default:
+    provider: opencode
+    model: deepseek-v4-flash
+  orchestration:
+    provider: opencode
+    model: qwen3.6-plus-free
+```
+
+**B. `chappie-n8n-workflows/config/providers.yaml`** — Configuración simplificada para n8n:
 ```yaml
 providers:
   stt:
     primary: "gemini"
-    fallback: "whisper-local"
     gemini:
-      api_key: "${GEMINI_API_KEY}"
+      api_key_env: "GEMINI_API_KEY"
       model: "gemini-2.5-flash"
-      endpoint: "https://generativelanguage.googleapis.com/v1beta"
-  
+      endpoint: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+      timeout_seconds: 20
+      max_retries: 2
   processing:
     primary: "opencode"
-    fallback: "gemini"
+    fallback_order:
+      - "opencode"
+      - "gemini"
     opencode:
+      endpoint: "http://localhost:3000/api/v1/chat/completions"
       models:
         - "opencode/deepseek-v4-flash-free"
         - "opencode/mimo-v2.5-free"
         - "opencode/qwen3.6-plus-free"
+      timeout_seconds: 30
+      max_retries: 2
     gemini:
-      api_key: "${GEMINI_API_KEY}"
+      api_key_env: "GEMINI_API_KEY"
       model: "gemini-2.5-flash"
-    claude:
-      api_key: "${CLAUDE_API_KEY}"
-      model: "claude-3-haiku"
-    gpt:
-      api_key: "${GPT_API_KEY}"
-      model: "gpt-4o-mini"
-  
-  tts:
-    primary: "edge-tts"
-    edge-tts:
-      voice: "es-AR-ElenaNeural"
-    gemini-tts:
-      api_key: "${GEMINI_API_KEY}"
-      voice: "chappie-es"
-    azure-tts:
-      api_key: "${AZURE_TTS_KEY}"
-      region: "eastus"
-      voice: "es-AR-ElenaNeural"
+      timeout_seconds: 30
+      max_retries: 2
+  rabbitmq:
+    host: "chappie-rabbitmq"
+    port: 5672
+    username_env: "RABBITMQ_USER"
+    password_env: "RABBITMQ_PASSWORD"
+    virtual_host: "/"
 ```
+
+Ambas versiones son válidas para sus respectivos contextos: la de `chappie-config` ofrece control granular para el ecosistema general, mientras que la de `chappie-n8n-workflows` está optimizada para el consumo directo desde los workflows de n8n.
 
 ### 4.2 tts-config.yaml
 

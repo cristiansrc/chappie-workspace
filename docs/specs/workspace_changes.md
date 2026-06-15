@@ -113,7 +113,7 @@
 
 ---
 
-
+### 2026-06-14 — Corrección de Owner y eliminación de workflow inexistente
 
 **Tipo:** Corrección arquitectónica  
 **Proyecto afectado:** chappie-n8n-workflows, chappie-notification  
