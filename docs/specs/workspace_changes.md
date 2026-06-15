@@ -7,6 +7,30 @@
 
 ## Registro de Cambios
 
+### 2026-06-14 — Resolución de DEBT-001 en chappie-notification
+
+**Tipo:** Resolución de deuda técnica  
+**Proyecto afectado:** chappie-notification  
+**Proyectos downstream afectados:** Ninguno
+
+#### Cambios realizados
+
+1. **Migración a `dbus-next`**
+   - Se reemplazó la dependencia `dasbus` (síncrona) por `dbus-next` (asíncrona).
+   - Se implementó una conexión persistente al session bus de D-Bus.
+   - Se conectó correctamente el listener para la señal `ActionInvoked` de SwayNC.
+2. **Matching de notificaciones**
+   - Se modificó el comando `notify-send` para incluir `--print-id`.
+   - Esto permite correlacionar la notificación enviada con la respuesta del usuario.
+3. **Deuda técnica consolidada**
+   - Se movió `DEBT.md` a `docs/specs/technical_debt.md` en el proyecto local.
+   - Se consolidó la deuda en el archivo global `docs/specs/technical_debt.md` marcándola como `resolved`.
+
+#### Próximos pasos requeridos
+- Continuar con la Fase 3 del plan de trabajo (chappie-daemon integración TTS).
+
+---
+
 ### 2026-06-14 — Completado initial-setup de chappie-notification
 
 **Tipo:** Progreso de proyecto  

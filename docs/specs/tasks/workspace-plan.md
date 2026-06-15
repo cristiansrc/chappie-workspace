@@ -23,7 +23,7 @@ Este documento detalla el plan de trabajo global para implementar el ecosistema 
 
 ## Fase 3: Notificaciones, TTS y Ejecución (Prioridad Media)
 
-- [ ] **chappie-notification**: Planificar e implementar el consumer de RabbitMQ para ejecutar agentes OpenCode, generar audio TTS y mostrar notificaciones SwayNC. (En progreso)
+- [x] **chappie-notification**: Planificar e implementar el consumer de RabbitMQ para ejecutar agentes OpenCode, generar audio TTS y mostrar notificaciones SwayNC.
 - [ ] **chappie-daemon (Integración TTS)**: Implementar el endpoint `POST /play-tts` para reproducir el audio generado con volume ducking.
 
 ## Fase 4: UI Visual (Prioridad Baja)
@@ -37,4 +37,5 @@ Este documento detalla el plan de trabajo global para implementar el ecosistema 
 1. **chappie-config**: Completado.
 2. **chappie-daemon**: Initial-setup completado. Pendiente de push al remoto por el usuario.
 3. **chappie-n8n-workflows**: Completado.
-4. **chappie-notification**: Delegado a `planner` para crear la Master Spec local y el diseño detallado.
+4. **chappie-notification**: Completado.
+5. **chappie-daemon (Integración TTS)**: Pendiente de delegación.
