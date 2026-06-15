@@ -23,7 +23,7 @@ Este documento detalla el plan de trabajo global para implementar el ecosistema 
 
 ## Fase 3: Notificaciones, TTS y Ejecución (Prioridad Media)
 
-- [ ] **chappie-notification**: Consumer de RabbitMQ para ejecutar agentes OpenCode, generar audio TTS y mostrar notificaciones SwayNC. **Pendiente de iniciar.**
+- [x] **chappie-notification**: Completado (incremento anterior). Arquitectura hexagonal con 4 consumers RabbitMQ, Edge-TTS, OpenCode, SwayNC. Tests unitarios e integración.
 
 ## Fase 4: UI Visual (Prioridad Baja)
 
@@ -39,5 +39,10 @@ Este documento detalla el plan de trabajo global para implementar el ecosistema 
 | **chappie-config** | ✅ Completo (YAML base) | Push al remoto |
 | **chappie-daemon** | ✅ Completo (initial-setup) | Push al remoto (requiere autenticación) |
 | **chappie-n8n-workflows** | ✅ Completo (initial-setup) | Push y QA manual |
-| **chappie-notification** | ⏳ Pendiente | Planificar e implementar |
-| **chappie-quickshell** | ⏳ Pendiente | Planificar e implementar |
+| **chappie-notification** | ✅ Completo (initial-setup) | Push y QA manual |
+| **chappie-quickshell** | ⏳ Pendiente | Iniciar planificación |
+
+## Observaciones
+
+- Todos los proyectos de backend están **completos**: infrastructure, config, daemon, n8n-workflows y notification.
+- Solo queda pendiente **chappie-quickshell** (widget visual QML/Qt6) como la última fase del ecosistema.

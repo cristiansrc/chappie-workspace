@@ -99,16 +99,17 @@
    - `chappie-config`: ✅ Completo (YAML base)
    - `chappie-daemon`: ✅ Completo (initial-setup, rama `develop` lista)
    - `chappie-n8n-workflows`: ✅ Completo (workflows JSON + config YAML, spec validada)
-   - `chappie-notification`: ⏳ Pendiente de iniciar
-   - `chappie-quickshell`: ⏳ Pendiente de iniciar
+   - `chappie-notification`: ✅ **Completo** (se descubrió que ya estaba implementado: 4 consumers RabbitMQ, Edge-TTS, OpenCode, SwayNC, tests, todo el código hexagonal listo)
+   - `chappie-quickshell`: ⏳ Pendiente
 
 2. **Corrección del workspace-plan.md:**
-   - Se corrigió `chappie-notification` de "completado" a "pendiente" (estaba incorrectamente marcado).
-   - Se actualizó la tabla de delegación para reflejar el estado real.
+   - Se corrigió `chappie-notification` de "pendiente" a "completado" tras verificar que existe la implementación completa.
+   - Se agregó sección de observaciones finales.
 
 #### Próximos pasos requeridos
-- Iniciar Fase 3: `chappie-notification` (consumer de RabbitMQ, TTS, agentes, notificaciones SwayNC).
-- Luego Fase 4: `chappie-quickshell` (widget visual).
+- Hacer push de `chappie-daemon`, `chappie-n8n-workflows` y `chappie-notification` a los remotos.
+- QA manual de los workflows de n8n.
+- Iniciar Fase 4: `chappie-quickshell` (widget visual QML/Qt6).
 
 ---
 
