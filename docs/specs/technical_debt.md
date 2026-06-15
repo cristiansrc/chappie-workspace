@@ -20,7 +20,7 @@
 
 | ID | Descripción | Fecha resolución | Fix |
 |---|---|---|---|
-| — | — | — | — |
+| DEBT-001 | D-Bus Implementation Incompleta (chappie-notification) | 2026-06-14 | Migrado de `dasbus` a `dbus-next`. Implementado `_ensure_dbus_connection()` con `dbus-next` async MessageBus, `_on_action_invoked()` como signal handler para `ActionInvoked`, y `--print-id` en `notify-send` para obtener el ID real de notificación del servidor. |
 
 ---
 
@@ -33,9 +33,15 @@ Cada proyecto debe mantener su propio `docs/specs/technical_debt.md` local:
 | chappie-infrastructure | No creado aún | — |
 | chappie-daemon | No creado aún | — |
 | chappie-n8n-workflows | No creado aún | — |
-| chappie-notification | No creado aún | — |
+| chappie-notification | `projects/chappie-notification/docs/specs/technical_debt.md` | Sincronizado |
 | chappie-quickshell | No creado aún | — |
 | chappie-config | No creado aún | — |
+
+### chappie-notification
+
+| ID | Descripción | Impacto | Plan de mitigación | Estado |
+|---|---|---|---|---|
+| DEBT-001 | D-Bus Implementation Incompleta | Las notificaciones con acciones nunca reciben respuesta del usuario real. | Migrado de `dasbus` a `dbus-next`. Implementado `_ensure_dbus_connection()` con `dbus-next` async MessageBus, `_on_action_invoked()` como signal handler para `ActionInvoked`, y `--print-id` en `notify-send` para obtener el ID real de notificación del servidor. | `resolved` |
 
 ---
 
