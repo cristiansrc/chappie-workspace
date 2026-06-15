@@ -27,7 +27,7 @@ Este documento detalla el plan de trabajo global para implementar el ecosistema 
 
 ## Fase 4: UI Visual (Prioridad Baja)
 
-- [ ] **chappie-quickshell**: Widget visual en QML/Qt6 para mostrar el texto TTS y el estado del sistema. **Pendiente de iniciar.**
+- [~] **chappie-quickshell**: Especificación creada y validada por `spec-validator` (veredicto: ready). En espera de aprobación humana para descomposición e implementación.
 
 ---
 
@@ -40,9 +40,9 @@ Este documento detalla el plan de trabajo global para implementar el ecosistema 
 | **chappie-daemon** | ✅ Completo (initial-setup) | Push al remoto (requiere autenticación) |
 | **chappie-n8n-workflows** | ✅ Completo (initial-setup) | Push y QA manual |
 | **chappie-notification** | ✅ Completo (initial-setup) | Push y QA manual |
-| **chappie-quickshell** | ⏳ Pendiente | Iniciar planificación |
+| **chappie-quickshell** | 🔶 Spec lista (awaiting approval) | Esperando aprobación humana |
 
 ## Observaciones
 
 - Todos los proyectos de backend están **completos**: infrastructure, config, daemon, n8n-workflows y notification.
-- Solo queda pendiente **chappie-quickshell** (widget visual QML/Qt6) como la última fase del ecosistema.
+- **chappie-quickshell** tiene la spec lista y validada. Pendiente de aprobación humana para iniciar implementación.

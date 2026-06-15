@@ -1,11 +1,33 @@
 # Workspace Changes - Chappie Ecosystem
 
 **Owner:** Enterprise Architect  
-**Última actualización:** 2026-06-14
+**Última actualización:** 2026-06-15
 
 ---
 
 ## Registro de Cambios
+
+### 2026-06-15 — Iniciado chappie-quickshell (Fase 4)
+
+**Tipo:** Progreso de proyecto  
+**Proyecto afectado:** chappie-quickshell  
+**Proyectos downstream afectados:** Ninguno
+
+#### Cambios realizados
+
+1. **Especificación del widget visual QML/Qt6**
+   - Master Spec creada (512 líneas): define ChappieTextWidget y ChappieStatusWidget.
+   - Shared Context preparado y validado por `spec-validator`.
+   - Veredicto: `ready` — sin hallazgos.
+   - Estado actual: `awaiting-human-plan-approval`.
+
+#### Próximos pasos requeridos
+- Aprobación humana del plan de implementación.
+- Descomposición de tareas y ejecución.
+
+---
+
+
 
 ### 2026-06-14 — Resolución de DEBT-001 en chappie-notification
 
