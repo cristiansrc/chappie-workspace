@@ -1,7 +1,7 @@
 # Plan de Trabajo del Workspace - Chappie Ecosystem
 
 **Estado:** Active
-**Última actualización:** 2026-06-15
+**Última actualización:** 2026-06-15 (completado chappie-quickshell)
 
 Este documento detalla el plan de trabajo global para implementar el ecosistema Chappie, basado en la arquitectura definida en `docs/architecture/system-landscape.md`.
 
@@ -27,7 +27,7 @@ Este documento detalla el plan de trabajo global para implementar el ecosistema 
 
 ## Fase 4: UI Visual (Prioridad Baja)
 
-- [~] **chappie-quickshell**: Especificación creada y validada por `spec-validator` (veredicto: ready). En espera de aprobación humana para descomposición e implementación.
+- [x] **chappie-quickshell**: Implementado y pusheado a `feature/widget-initial`. Singleton ChappieState, TextWidget con animaciones, StatusWidget con colores/pulso, shell.qml entry point, test-widget.sh. Code review aprobado (9 hallazgos corregidos).
 
 ---
 
@@ -40,9 +40,9 @@ Este documento detalla el plan de trabajo global para implementar el ecosistema 
 | **chappie-daemon** | ✅ Completo (initial-setup) | Push al remoto (requiere autenticación) |
 | **chappie-n8n-workflows** | ✅ Completo (initial-setup) | Push y QA manual |
 | **chappie-notification** | ✅ Completo (initial-setup) | Push y QA manual |
-| **chappie-quickshell** | 🔶 Spec lista (awaiting approval) | Esperando aprobación humana |
+| **chappie-quickshell** | ✅ Completo | Pendiente QA manual y merge a develop |
 
 ## Observaciones
 
-- Todos los proyectos de backend están **completos**: infrastructure, config, daemon, n8n-workflows y notification.
-- **chappie-quickshell** tiene la spec lista y validada. Pendiente de aprobación humana para iniciar implementación.
+- Todos los proyectos del ecosistema Chappie están **completos**: infrastructure, config, daemon, n8n-workflows, notification y quickshell.
+- **chappie-quickshell** implementado en Fase 4 con widget visual QML/Qt6. Pendiente QA manual en Hyprland.

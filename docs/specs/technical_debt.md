@@ -1,7 +1,7 @@
 # Technical Debt - Chappie Ecosystem (Global)
 
 **Owner:** Enterprise Architect  
-**Última actualización:** 2026-06-14
+**Última actualización:** 2026-06-15
 
 ---
 
@@ -34,7 +34,7 @@ Cada proyecto debe mantener su propio `docs/specs/technical_debt.md` local:
 | chappie-daemon | No creado aún | — |
 | chappie-n8n-workflows | No creado aún | — |
 | chappie-notification | `projects/chappie-notification/docs/specs/technical_debt.md` | Sincronizado |
-| chappie-quickshell | No creado aún | — |
+| chappie-quickshell | `projects/chappie-quickshell/docs/specs/technical_debt.md` | Creado (sin deuda activa) |
 | chappie-config | No creado aún | — |
 
 ### chappie-notification

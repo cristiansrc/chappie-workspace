@@ -2,7 +2,7 @@
 
 **Estado:** Active  
 **Owner:** Enterprise Architect  
-**Última actualización:** 2026-06-14 (completada infraestructura base)  
+**Última actualización:** 2026-06-15 (completado chappie-quickshell widget-initial)  
 **Workspace Root:** `/home/cristiansrc/Documentos/Proyectos/chappie-workspace`
 
 ---
@@ -47,7 +47,7 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
 | chappie-daemon | `projects/chappie-daemon/` | Voice Capture, Audio Output Control, STT Client | Cris | Pendiente |
 | chappie-n8n-workflows | `projects/chappie-n8n-workflows/` | Orchestration, Memory | Cris | Pendiente |
 | chappie-notification | `projects/chappie-notification/` | Agent Execution, Event Bus Consumer, TTS, Notification | Cris | Pendiente |
-| chappie-quickshell | `projects/chappie-quickshell/` | Notification UI (Widget) | Cris | Pendiente |
+| chappie-quickshell | `projects/chappie-quickshell/` | Notification UI (Widget) | Cris | Active |
 | chappie-config | `projects/chappie-config/` | Configuration, Personality | Cris | Pendiente |
 
 ---
@@ -148,9 +148,12 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
 - Gestión de memoria conversacional
 
 ### chappie-quickshell
-- Widget visual de texto TTS
-- Widget de estado de Chappie
-- Lectura de archivos de estado con FileView
+- Widget visual de texto TTS con animaciones FadeIn+SlideDown/FadeOut+SlideUp
+- Widget de estado del daemon con 5 estados (colores + pulso)
+- Singleton ChappieState con 4 FileView instances para lectura reactiva
+- Entry point shell.qml con Layer Surface overlay (focusable:false, exclusiveZone:0)
+- Script de prueba manual (test-widget.sh) con 10 pasos
+- Sin polling, sin Timers, sin escritura de archivos (read-only consumer)
 
 ### chappie-config
 - Configuración de proveedores (providers.yaml)
