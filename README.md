@@ -74,13 +74,15 @@ Chappie es un asistente de voz que combina:
 | Proyecto | Responsabilidad | Estado |
 |---|---|---|
 | **chappie-infrastructure** | Docker Compose (n8n + RabbitMQ), Systemd auto-inicio, scripts de control | ✅ Active |
-| **chappie-daemon** | Servicio de grabación, control de volumen, STT y reproducción TTS | 🟡 En desarrollo |
+| **chappie-daemon** | Servicio de grabación, control de volumen, STT y reproducción TTS | ✅ Active |
 | **chappie-n8n-workflows** | Workflows de n8n para orquestación del asistente | ✅ Active |
 | **chappie-notification** | Consumer de RabbitMQ para ejecución y notificaciones | ✅ Active |
-| **chappie-quickshell** | Widget de Quickshell para visualización de texto TTS | Pendiente |
+| **chappie-quickshell** | Widget de Quickshell para visualización de texto TTS y estado del daemon | ✅ Active |
 | **chappie-config** | Configuración centralizada de agentes, skills y personalidades | ✅ Active |
 
 ---
+
+> **Estado:** Fases 1-3 completadas. **Fase 4** (widget-initial) completada. Todos los 6 proyectos del ecosistema están implementados.
 
 ## Fases de Implementación
 
@@ -94,17 +96,16 @@ Chappie es un asistente de voz que combina:
 - [x] Configuración YAML básica (proveedores, personalidad) en `chappie-config`
 - [x] Implementar `chappie-daemon` (grabación + control volumen + STT) - *Initial setup completado*
 - [x] Crear workflow básico en n8n (STT → Modelo → JSON → TTS) en `chappie-n8n-workflows`
-- [ ] Instalar SwayNC para notificaciones
-- [ ] Instalar Quickshell para widget de texto
-- [ ] Implementar volume ducking durante TTS (todos los sinks)
-- [ ] Configurar atajos en Hyprland (SUPER+ALT+C, SUPER+ALT+T)
-- [ ] Implementar reproducción de TTS en daemon
+- [x] Implementar volume ducking durante TTS (todos los sinks)
+- [x] Instalar SwayNC para notificaciones
+- [x] Instalar Quickshell para widget de texto
+- [x] Implementar reproducción de TTS en daemon
 
 ### Fase 2 - Widget de Texto y Notificaciones
 - [x] Implementar `chappie-notification` consumers
 - [x] Notificaciones básicas con SwayNC
-- [ ] Crear widget de Quickshell para texto TTS
-- [ ] Implementar toggle de texto (SUPER+ALT+T)
+- [x] Crear widget de Quickshell para texto TTS y estado del daemon
+- [ ] Implementar toggle de texto (SUPER+ALT+T) — gestionado externamente por chappie-daemon
 
 ### Fase 3 - Agentes y RabbitMQ
 - [x] Integración con OpenCode CLI via n8n
@@ -114,9 +115,9 @@ Chappie es un asistente de voz que combina:
 - [x] Sistema de preguntas/respuestas con SwayNC
 
 ### Fase 4 - Pulido y Expansión
+- [x] Overlay de estado (escuchando/pensando/trabajando) en Quickshell
 - [ ] Ojo Biónico (captura de pantalla + análisis)
 - [ ] Multi-proveedor completo (Claude, GPT, Azure TTS)
-- [ ] Overlay de estado (escuchando/pensando/trabajando) en Quickshell
 - [ ] Clonación de voz de Chappie (cuando esté disponible)
 
 ---
@@ -164,4 +165,4 @@ Ver [LICENSE.md](LICENSE.md)
 ---
 
 *Creado: 2026-06-13*  
-*Última actualización: 2026-06-14 (completada Fase 3 - chappie-notification)*
+*Última actualización: 2026-06-15 (completado chappie-quickshell - Fase 4)*
