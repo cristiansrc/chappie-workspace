@@ -76,7 +76,7 @@ Chappie es un asistente de voz que combina:
 | **chappie-infrastructure** | Docker Compose (n8n + RabbitMQ), Systemd auto-inicio, scripts de control | ✅ Active |
 | **chappie-daemon** | Servicio de grabación, control de volumen, STT y reproducción TTS | 🟡 En desarrollo |
 | **chappie-n8n-workflows** | Workflows de n8n para orquestación del asistente | ✅ Active |
-| **chappie-notification** | Consumer de RabbitMQ para ejecución y notificaciones | Pendiente |
+| **chappie-notification** | Consumer de RabbitMQ para ejecución y notificaciones | ✅ Active |
 | **chappie-quickshell** | Widget de Quickshell para visualización de texto TTS | Pendiente |
 | **chappie-config** | Configuración centralizada de agentes, skills y personalidades | ✅ Active |
 
@@ -101,17 +101,17 @@ Chappie es un asistente de voz que combina:
 - [ ] Implementar reproducción de TTS en daemon
 
 ### Fase 2 - Widget de Texto y Notificaciones
+- [x] Implementar `chappie-notification` consumers
+- [x] Notificaciones básicas con SwayNC
 - [ ] Crear widget de Quickshell para texto TTS
 - [ ] Implementar toggle de texto (SUPER+ALT+T)
-- [ ] Implementar `chappie-notification` consumers
-- [ ] Notificaciones básicas con SwayNC
 
 ### Fase 3 - Agentes y RabbitMQ
-- [ ] Integración con OpenCode CLI via n8n
-- [ ] Flujo de ejecución en background (agentes + comandos)
-- [ ] Manejo de errores con retry y notificación
-- [ ] Memoria con auto-compresión
-- [ ] Sistema de preguntas/respuestas con SwayNC
+- [x] Integración con OpenCode CLI via n8n
+- [x] Flujo de ejecución en background (agentes + comandos)
+- [x] Manejo de errores con retry y notificación
+- [x] Memoria con auto-compresión
+- [x] Sistema de preguntas/respuestas con SwayNC
 
 ### Fase 4 - Pulido y Expansión
 - [ ] Ojo Biónico (captura de pantalla + análisis)
@@ -164,4 +164,4 @@ Ver [LICENSE.md](LICENSE.md)
 ---
 
 *Creado: 2026-06-13*  
-*Última actualización: 2026-06-14 (completada Fase 1 y Fase 2 - Workflows n8n)*
+*Última actualización: 2026-06-14 (completada Fase 3 - chappie-notification)*

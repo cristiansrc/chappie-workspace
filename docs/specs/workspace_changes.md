@@ -7,6 +7,34 @@
 
 ## Registro de Cambios
 
+### 2026-06-14 — Completado initial-setup de chappie-notification
+
+**Tipo:** Progreso de proyecto  
+**Proyecto afectado:** chappie-notification  
+**Proyectos downstream afectados:** Ninguno
+
+#### Cambios realizados
+
+1. **Implementación de Daemon Python**
+   - Arquitectura hexagonal estricta (Domain, Application, Infrastructure).
+   - 4 Consumers de RabbitMQ (Execution, Error, TTS, Notification).
+   - Integraciones con Edge-TTS, OpenCode CLI, SwayNC (D-Bus) y n8n (HTTP).
+   - Cobertura de tests unitarios > 94%.
+2. **Rama `feature/initial-setup` creada** desde `develop`
+   - Commit semántico: `feat(daemon): implement notification daemon with hexagonal architecture`
+   - Working tree limpio.
+3. **Incremento cerrado**
+   - Master Spec local en estado `Active`.
+   - Shared Context en estado `closed`.
+   - Pendiente de QA manual (Human QA Approval).
+
+#### Próximos pasos requeridos
+- Hacer push de la rama `feature/initial-setup` al remoto (si aplica).
+- Realizar pruebas manuales (QA) del daemon.
+- Continuar con la Fase 3 del plan de trabajo (chappie-daemon integración TTS).
+
+---
+
 ### 2026-06-14 — Completado initial-setup de chappie-n8n-workflows
 
 **Tipo:** Progreso de proyecto  
