@@ -49,7 +49,7 @@ Chappie es un ecosistema de asistente de voz personal con personalidad única (b
 | **chappie-daemon** | Python 3 + asyncio | Servicio de grabación, control de volumen, STT, reproducción TTS, escritura de estado | 8765 (HTTP API) |
 | **chappie-n8n** | n8n (Node.js) | Orquestación de workflows: STT → Modelo → JSON → TTS | 5678 (Web UI) |
 | **chappie-rabbitmq** | RabbitMQ 3.13 | Cola de mensajes para eventos, errores, TTS, notificaciones | 5672 (AMQP), 15672 (Management UI) |
-| **chappie-notification** | Python 3 + pika | Consumer de RabbitMQ: ejecución de agentes, comandos, TTS, notificaciones | N/A |
+| **chappie-notification** | Python 3 + aio-pika | Consumer de RabbitMQ: ejecución de agentes, comandos, TTS, notificaciones | N/A |
 | **chappie-quickshell** | QML/Qt6 | Widget de visualización de texto TTS y estado | N/A |
 | **SwayNC** | C/GTK | Daemon de notificaciones con acciones interactivas | N/A |
 

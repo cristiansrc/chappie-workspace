@@ -19,11 +19,11 @@ Este documento detalla el plan de trabajo global para implementar el ecosistema 
 
 ## Fase 2: Orquestación y Procesamiento (Prioridad Alta)
 
-- [ ] **chappie-n8n-workflows**: Diseñar e implementar los workflows de n8n para el procesamiento de voz (STT -> LLM -> JSON) y manejo de errores. (En progreso)
+- [x] **chappie-n8n-workflows**: Diseñar e implementar los workflows de n8n para el procesamiento de voz (STT -> LLM -> JSON) y manejo de errores.
 
 ## Fase 3: Notificaciones, TTS y Ejecución (Prioridad Media)
 
-- [ ] **chappie-notification**: Planificar e implementar el consumer de RabbitMQ para ejecutar agentes OpenCode, generar audio TTS y mostrar notificaciones SwayNC.
+- [ ] **chappie-notification**: Planificar e implementar el consumer de RabbitMQ para ejecutar agentes OpenCode, generar audio TTS y mostrar notificaciones SwayNC. (En progreso)
 - [ ] **chappie-daemon (Integración TTS)**: Implementar el endpoint `POST /play-tts` para reproducir el audio generado con volume ducking.
 
 ## Fase 4: UI Visual (Prioridad Baja)
@@ -35,6 +35,6 @@ Este documento detalla el plan de trabajo global para implementar el ecosistema 
 ## Delegación Actual
 
 1. **chappie-config**: Completado.
-2. **chappie-daemon**: Initial-setup completado por `executor`. Rama `develop` creada. Pendiente de push al remoto por el usuario.
-3. **chappie-n8n-workflows**: Delegado a `planner` para crear la Master Spec local y el diseño detallado de los workflows.
+2. **chappie-daemon**: Initial-setup completado. Pendiente de push al remoto por el usuario.
+3. **chappie-n8n-workflows**: Completado.
 4. **chappie-notification**: Delegado a `planner` para crear la Master Spec local y el diseño detallado.

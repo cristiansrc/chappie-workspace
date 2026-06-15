@@ -212,7 +212,7 @@
 | Aspecto | Detalle |
 |---|---|
 | **Tipo** | Queue (point-to-point) |
-| **Producer** | chappie-notification (execution_consumer) |
+| **Producer** | chappie-notification (execution_consumer, tts_consumer) |
 | **Consumer** | chappie-notification (error_consumer) |
 | **Schema** | Ver abajo |
 | **Durability** | Durable |
@@ -340,7 +340,7 @@
 |---|---|
 | **Tipo** | Queue (fanout para múltiples consumidores) |
 | **Producer** | n8n, chappie-notification |
-| **Consumer** | chappie-notification (notification_consumer), SwayNC |
+| **Consumer** | chappie-notification (notification_consumer) |
 | **Schema** | Ver abajo |
 | **Durability** | Durable |
 | **Ack** | Manual |
