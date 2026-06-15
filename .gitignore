@@ -56,3 +56,10 @@ projects/chappie-notification/data/
 # Quickshell build
 projects/chappie-quickshell/build/
 projects/chappie-quickshell/.qmldir/
+
+# Graphify - artefactos generados (cache, grafos HTML/JSON, reportes)
+# Se regenera con: graphify update .
+graphify-out/
+
+# OpenCode - configuración local del agente y plugins
+.opencode/
